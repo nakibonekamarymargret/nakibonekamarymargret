@@ -69,7 +69,7 @@ const Portfolio = () => {
               <p
                 className={`text-xl text-gray-600 mb-8 transform transition-all duration-1000 delay-500 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"}`}
               >
-                Detail-oriented Software Engineering graduate with expertise in
+                Detail-oriented Software Engineering  with expertise in
                 full-stack development, data analysis, and machine learning.
                 Passionate about creating innovative solutions that drive
                 business growth.
