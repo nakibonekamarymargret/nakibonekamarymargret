@@ -1,5 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef, ReactNode } from "react";
+import Image from "next/image";
+
 import {
  
   ChevronRight,
@@ -39,7 +41,7 @@ const Portfolio = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-     <Navbar/>
+      <Navbar />
 
       {/* Hero Section */}
       <section
@@ -94,13 +96,16 @@ const Portfolio = () => {
               className={`flex justify-center lg:justify-end transform transition-all duration-1000 delay-300 ${isLoaded ? "translate-x-0 opacity-100" : "translate-x-20 opacity-0"}`}
             >
               <div className="relative">
-                <div className="w-80 h-80 rounded-full overflow-hidden border-8 border-white shadow-xl transform hover:scale-105 transition-all duration-500 hover:shadow-2xl">
-                  <img
+                <div className="relative w-80 h-80 rounded-full overflow-hidden border-8 border-white shadow-xl transform hover:scale-105 transition-all duration-500 hover:shadow-2xl">
+                  <Image
                     src="/mary.png"
                     alt="Mary Nakiboneka"
-                    className="w-full h-full object-cover"
+                    fill
+                    priority
+                    className="object-cover"
                   />
                 </div>
+
                 {/* Floating animation elements */}
                 <div className="absolute -top-4 -right-4 w-8 h-8 bg-blue-500 rounded-full animate-bounce"></div>
                 <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-indigo-500 rounded-full animate-pulse"></div>
@@ -111,21 +116,21 @@ const Portfolio = () => {
       </section>
 
       {/* About Section */}
-     <About/>
+      <About />
 
       {/* Experience Section */}
-     <Experience/>
+      <Experience />
 
       {/* Projects Section */}
-     <Projects/>
+      <Projects />
 
       {/* Skills Section */}
-     <Skills/>  
+      <Skills />
 
       {/* Contact Section */}
-      <Contact/>
+      <Contact />
 
-     <Footer/>
+      <Footer />
     </div>
   );
 };
