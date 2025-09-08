@@ -15,6 +15,14 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Nakiboneka Mary Margret",
   description: "Portfolio website of Nakiboneka Mary Margret",
+  keywords: [
+    "Nakiboneka",
+    "Mary Margret",
+    "Software Engineer",
+    "Data Analyst",
+    "Portfolio",
+  ],
+  authors: [{ name: "Nakiboneka Mary Margret" }],
   verification: {
     google: "XmU9hP48WSGlmQXLivnKV2Wp0NHSoDs_EfomRITRrRg",
   },
