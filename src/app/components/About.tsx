@@ -34,7 +34,7 @@ const About = () => {
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">About Me</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-               Software Engineering  with a strong foundation in
+               Software Engineer with a strong foundation in
               data analysis, machine learning, and full-stack development. Ready
               to contribute to data-driven projects and innovative software
               solutions.
