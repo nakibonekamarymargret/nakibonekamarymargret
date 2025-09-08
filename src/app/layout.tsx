@@ -9,12 +9,15 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
-  subsets: ["latin"],
+  subsets: ["latin"),
 });
 
 export const metadata: Metadata = {
   title: "Nakiboneka Mary Margret",
   description: "Portfolio website of Nakiboneka Mary Margret",
+  verification: {
+    google: "XmU9hP48WSGlmQXLivnKV2Wp0NHSoDs_EfomRITRrRg",
+  },
 };
 
 export default function RootLayout({
