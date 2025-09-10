@@ -56,13 +56,14 @@ const Navbar = () => {
   return (
     <div>
       <nav
-        className={`fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm z-50 border-b border-gray-200 transform transition-all duration-500 ${isLoaded ? "translate-y-0" : "-translate-y-full"}`}
+        className={`fixed top-0 w-full bg-white/90 z-50 backdrop-blur-lg z-50 transform transition-all duration-500
+           ${isLoaded ? "translate-y-0" : "-translate-y-full"}`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6  lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex-shrink-0">
               <h1
-                className={`text-xl font-bold text-gray-900 transform transition-all duration-700 ${isLoaded ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"}`}
+                className={`text-3xl  font-sans font-bold bg-linear-to-r from-blue-400 to-indigo-900 bg-clip-text  font-extrabold text-transparent transform transition-all duration-700 ${isLoaded ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"}`}
               >
                 Mary Margret Nakiboneka
               </h1>
@@ -75,10 +76,10 @@ const Navbar = () => {
                   <button
                     key={item.id}
                     onClick={() => scrollToSection(item.id)}
-                    className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 transform hover:scale-105 ${
+                    className={`px-3 cursor-pointer py-2 rounded-md text-sm font-medium transition-all duration-300 transform hover:scale-105 ${
                       activeSection === item.id
                         ? "bg-blue-600 text-white shadow-lg"
-                        : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                        : "text-gray-700 hover:bg-gray-100 hover:text-blue-600 after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-blue-600 after:left-0 after:bottom-0  after:transition-all hover:after:w-full"
                     } ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"}`}
                     style={{ transitionDelay: `${index * 100}ms` }}
                   >

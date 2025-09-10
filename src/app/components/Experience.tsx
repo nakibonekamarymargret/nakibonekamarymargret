@@ -44,7 +44,11 @@ const Experience = () => {
   ];
 
   return (
-    <section id="experience" className="py-20 bg-gray-50">
+    <section
+      id="experience"
+      className="py-20 bg-gray-50 pt-16 bg-[url('/bg2.jpeg')] bg-contain bg-center bg-no-repeat
+      overflow-hidden relative"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedSection>
           <div className="text-center mb-16">
