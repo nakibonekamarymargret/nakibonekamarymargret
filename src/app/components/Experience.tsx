@@ -2,6 +2,7 @@
 import { ChevronRight } from "lucide-react";
 import React from "react";
 import AnimatedSection from "./AnimatedSection";
+import Image from "next/image";
 
 const Experience = () => {
   const experiences = [
@@ -11,6 +12,7 @@ const Experience = () => {
       period: "Feb 2025 – Apr 2025",
       description:
         "Developed robust backend APIs using Spring Boot and Java, integrated React frontends, and optimized client-server communication with Axios.",
+      image: "/schoolpay.png",
       achievements: [
         "Improved system usability and user engagement",
         "Reduced page load times",
@@ -23,6 +25,7 @@ const Experience = () => {
       period: "Sep 2024 – Dec 2024",
       description:
         "Refactored frontend code for better performance and accessibility, collaborated on user-centered design improvements.",
+      image: "/servicecops.png",
       achievements: [
         "Improved responsiveness across devices",
         "Enhanced user experience",
@@ -35,6 +38,7 @@ const Experience = () => {
       period: "Jul 2024 – Sep 2024",
       description:
         "Designed UI screens using Flutter, collaborated with cross-functional teams for seamless system integration.",
+      // image: "/autofore.png",
       achievements: [
         "Enhanced user interface consistency",
         "Improved user experience",
@@ -44,11 +48,7 @@ const Experience = () => {
   ];
 
   return (
-    <section
-      id="experience"
-      className="py-20 bg-gray-50 pt-16 bg-[url('/bg2.jpeg')] bg-contain bg-center bg-no-repeat
-      overflow-hidden relative"
-    >
+    <section id="experience" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedSection>
           <div className="text-center mb-16">
@@ -61,38 +61,46 @@ const Experience = () => {
           </div>
         </AnimatedSection>
 
-        <div className="space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {experiences.map((exp, index) => (
-            <AnimatedSection
-              key={index}
-              className="transform transition-all duration-700 hover:shadow-xl hover:scale-[1.02]"
-            >
+            <AnimatedSection key={index}>
               <div
-                className="bg-white rounded-lg shadow-md p-8"
+                className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 style={{ transitionDelay: `${index * 200}ms` }}
               >
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
+                {/* Image for each experience card */}
+                {/* <div className="relative w-24 h-24 mb-4 rounded-full overflow-hidden border-2 border-gray-200">
+                  <Image
+                    src={exp.image}
+                    alt={exp.company}
+                    fill
+                    className="object-cover"
+                  />
+                </div> */}
+
+                {/* Text content */}
+                <div className="flex-1">
+                  <div className="mb-4">
+                    <h3 className="text-xl font-bold text-gray-900">
                       {exp.title}
                     </h3>
                     <p className="text-lg text-blue-600">{exp.company}</p>
+                    <span className="inline-flex items-center px-3 py-1 mt-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                      {exp.period}
+                    </span>
                   </div>
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 animate-pulse">
-                    {exp.period}
-                  </span>
-                </div>
-                <p className="text-gray-600 mb-4">{exp.description}</p>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                  {exp.achievements.map((achievement, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center text-sm text-gray-600 group"
-                    >
-                      <ChevronRight className="h-4 w-4 text-blue-600 mr-2 flex-shrink-0 group-hover:translate-x-1 transition-transform duration-300" />
-                      {achievement}
-                    </div>
-                  ))}
+                  <p className="text-gray-600 mb-4">{exp.description}</p>
+                  <div className="flex flex-col items-start space-y-2">
+                    {exp.achievements.map((achievement, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center text-sm text-gray-600 w-full"
+                      >
+                        <ChevronRight className="h-4 w-4 text-blue-600 mr-2 flex-shrink-0" />
+                        <span className="text-left">{achievement}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </AnimatedSection>
