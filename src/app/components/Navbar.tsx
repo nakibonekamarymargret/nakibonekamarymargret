@@ -53,17 +53,17 @@ const Navbar = () => {
       setIsMenuOpen(false);
     }
   };
-  return (
+   return (
     <div>
       <nav
-        className={`fixed top-0 w-full bg-white/90 z-50 backdrop-blur-lg z-50 transform transition-all duration-500
+        className={`fixed top-0 w-full bg-black/50 z-50 backdrop-blur-lg transform transition-all duration-500
            ${isLoaded ? "translate-y-0" : "-translate-y-full"}`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6  lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex-shrink-0">
               <h1
-                className={`text-3xl  font-sans font-bold bg-linear-to-r from-blue-400 to-indigo-900 bg-clip-text  font-extrabold text-transparent transform transition-all duration-700 ${isLoaded ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"}`}
+                className={`text-3xl font-sans font-bold bg-linear-to-r from-blue-400 to-indigo-900 bg-clip-text font-extrabold text-transparent transform transition-all duration-700 ${isLoaded ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"}`}
               >
                 Mary Margret Nakiboneka
               </h1>
@@ -76,11 +76,11 @@ const Navbar = () => {
                   <button
                     key={item.id}
                     onClick={() => scrollToSection(item.id)}
-                    className={`px-3 cursor-pointer py-2 rounded-md text-sm font-medium transition-all duration-300 transform hover:scale-105 ${
-                      activeSection === item.id
-                        ? "bg-blue-600 text-white shadow-lg"
-                        : "text-gray-700 hover:bg-gray-100 hover:text-blue-600 after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-blue-600 after:left-0 after:bottom-0  after:transition-all hover:after:w-full"
-                    } ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"}`}
+                    className={`px-3 cursor-pointer py-2 rounded-md text-sm font-medium transition-all duration-300 transform hover:scale-105 relative
+                      ${activeSection === item.id
+                        ? "text-blue-400 after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-blue-400 after:left-0 after:bottom-0"
+                        : "text-gray-200 hover:text-blue-400 hover:bg-white/10 after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-blue-400 after:left-0 after:bottom-0 after:transition-all hover:after:w-full"
+                      } ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"}`}
                     style={{ transitionDelay: `${index * 100}ms` }}
                   >
                     {item.name}
@@ -93,7 +93,7 @@ const Navbar = () => {
             <div className="md:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                className="inline-flex items-center justify-center p-2 rounded-md text-gray-200 hover:text-gray-500 hover:bg-gray-100/10"
               >
                 {isMenuOpen ? (
                   <X className="h-6 w-6" />
@@ -108,7 +108,7 @@ const Navbar = () => {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-b border-gray-200">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-black/50 border-b border-gray-700">
               {navigation.map((item) => (
                 <button
                   key={item.id}
@@ -116,7 +116,7 @@ const Navbar = () => {
                   className={`block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors ${
                     activeSection === item.id
                       ? "bg-blue-600 text-white"
-                      : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                      : "text-gray-200 hover:bg-gray-100/10 hover:text-white"
                   }`}
                 >
                   {item.name}

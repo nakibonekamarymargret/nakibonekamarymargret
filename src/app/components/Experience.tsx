@@ -38,7 +38,7 @@ const Experience = () => {
       period: "Jul 2024 – Sep 2024",
       description:
         "Designed UI screens using Flutter, collaborated with cross-functional teams for seamless system integration.",
-      // image: "/autofore.png",
+      image: "/autofore.png",
       achievements: [
         "Enhanced user interface consistency",
         "Improved user experience",
@@ -48,14 +48,20 @@ const Experience = () => {
   ];
 
   return (
-    <section id="experience" className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section
+      id="experience"
+      className="py-20 bg-[url('/bg1.jpeg')] bg-cover bg-center bg-no-repeat overflow-hidden relative"
+    >
+      {/* Semi-transparent overlay to ensure text readability */}
+      <div className="absolute inset-0 bg-black opacity-60"></div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <AnimatedSection>
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl font-bold text-white mb-4">
               Professional Experience
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-200">
               Recent graduate trainee positions and internship experience
             </p>
           </div>
@@ -65,18 +71,18 @@ const Experience = () => {
           {experiences.map((exp, index) => (
             <AnimatedSection key={index}>
               <div
-                className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="bg-white/90 rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-xl transition-all duration-300 transform hover:scale-105 backdrop-blur-sm"
                 style={{ transitionDelay: `${index * 200}ms` }}
               >
                 {/* Image for each experience card */}
-                {/* <div className="relative w-24 h-24 mb-4 rounded-full overflow-hidden border-2 border-gray-200">
+                <div className="relative w-24 h-24 mb-4 rounded-full overflow-hidden border-2 border-gray-200">
                   <Image
                     src={exp.image}
                     alt={exp.company}
                     fill
                     className="object-cover"
                   />
-                </div> */}
+                </div>
 
                 {/* Text content */}
                 <div className="flex-1">
