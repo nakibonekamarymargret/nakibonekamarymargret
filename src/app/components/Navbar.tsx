@@ -56,7 +56,8 @@ const Navbar = () => {
    return (
     <div>
       <nav
-        className={`fixed top-0 w-full bg-black/50 z-50 backdrop-blur-lg transform transition-all duration-500
+        // Changed background to a solid dark color to match your sections
+        className={`fixed top-0 w-full bg-gray-900 z-50 backdrop-blur-lg transform transition-all duration-500
            ${isLoaded ? "translate-y-0" : "-translate-y-full"}`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6  lg:px-8">
