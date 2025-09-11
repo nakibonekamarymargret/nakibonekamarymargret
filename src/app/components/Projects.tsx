@@ -31,6 +31,19 @@ const Projects = () => {
       ],
     },
     {
+      title: "Medsave Backend",
+      subtitle: "Node.js & Firebase Backend APIs",
+      period: "May 2025 – August 2025",
+      description:
+        "Created backend APIs for Medsave platform using Node.js, Express, and Firebase, supporting user authentication, medical record management, and real-time updates.",
+      technologies: ["Node.js", "Express", "Firebase", "REST API", "Postman"],
+      achievements: [
+        "Real-time data management with Firebase",
+        "Secure API endpoints with JWT authentication",
+        "Improved API response times by 25%",
+      ],
+    },
+    {
       title: "HR Management System",
       subtitle: "Database & Frontend Development",
       period: "Jun 2023 – Aug 2023",

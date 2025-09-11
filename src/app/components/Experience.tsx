@@ -7,6 +7,19 @@ import Image from "next/image";
 const Experience = () => {
   const experiences = [
     {
+      title: "Backend Developer",
+      company: "Medsave",
+      period: "May 2025 – Present",
+      description:
+        "Developed RESTful APIs with Node.js and integrated Firebase for real-time data management, authentication, and storage.",
+      image: "/medsave.png", // add this image to your public folder
+      achievements: [
+        "Built scalable and secure APIs",
+        "Implemented real-time data synchronization using Firebase",
+        "Improved system performance and reliability",
+      ],
+    },
+    {
       title: "Software Developer Graduate Trainee",
       company: "Service Cops - School Pay",
       period: "Feb 2025 – Apr 2025",

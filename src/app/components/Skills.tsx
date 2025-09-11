@@ -1,4 +1,11 @@
-import { Award, BarChart3, Code, Database, Smartphone } from "lucide-react";
+import {
+  Award,
+  BarChart3,
+  Code,
+  Database,
+  Smartphone,
+  Server,
+} from "lucide-react";
 import React from "react";
 import AnimatedSection from "./AnimatedSection";
 
@@ -22,15 +29,16 @@ const Skills = () => {
       ],
     },
     {
-      category: "Databases & Tools",
+      category: "Databases & Backend",
       icon: <Database className="w-6 h-6" />,
       skills: [
         "MySQL",
         "PostgreSQL",
+        "Firebase",
+        "Node.js",
+        "REST APIs",
         "Git/GitHub",
         "Spring Boot",
-        "Power BI",
-        "Google Colab",
       ],
     },
     {
@@ -44,6 +52,11 @@ const Skills = () => {
         "UI/UX Design",
         "API Integration",
       ],
+    },
+    {
+      category: "Server & Deployment",
+      icon: <Server className="w-6 h-6" />,
+      skills: ["Firebase Hosting", "Heroku", "Vercel", "AWS", "CI/CD"],
     },
   ];
 
