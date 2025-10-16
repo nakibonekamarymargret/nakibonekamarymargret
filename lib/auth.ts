@@ -1,5 +1,5 @@
 // lib/auth.ts
-import prisma from "./prisma";
+import { prisma } from "./prisma"; // ✅ correct
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL!;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!; // hashed is better
