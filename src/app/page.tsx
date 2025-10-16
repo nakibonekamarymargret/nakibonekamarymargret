@@ -86,6 +86,7 @@ const Portfolio = () => {
                     src="/mary.png"
                     alt="Mary Nakiboneka"
                     fill
+                    sizes="(max-width: 768px) 200px, 320px"
                     priority
                     className="object-cover"
                   />

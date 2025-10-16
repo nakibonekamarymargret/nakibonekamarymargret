@@ -1,71 +1,47 @@
 "use client";
 import { ChevronRight } from "lucide-react";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import AnimatedSection from "./AnimatedSection";
 import Image from "next/image";
+import { ExperienceData } from "../types/interface";
 
 const Experience = () => {
-  const experiences = [
-    {
-      title: "Backend Developer",
-      company: "Medsave",
-      period: "May 2025 – Present",
-      description:
-        "Developed RESTful APIs with Node.js and integrated Firebase for real-time data management, authentication, and storage.",
-      image: "/medsave.png", // add this image to your public folder
-      achievements: [
-        "Built scalable and secure APIs",
-        "Implemented real-time data synchronization using Firebase",
-        "Improved system performance and reliability",
-      ],
-    },
-    {
-      title: "Software Developer Graduate Trainee",
-      company: "Service Cops - School Pay",
-      period: "Feb 2025 – Apr 2025",
-      description:
-        "Developed robust backend APIs using Spring Boot and Java, integrated React frontends, and optimized client-server communication with Axios.",
-      image: "/schoolpay.png",
-      achievements: [
-        "Improved system usability and user engagement",
-        "Reduced page load times",
-        "Enhanced data processing efficiency",
-      ],
-    },
-    {
-      title: "Junior Developer Graduate Trainee",
-      company: "Service Cops - School Pay",
-      period: "Sep 2024 – Dec 2024",
-      description:
-        "Refactored frontend code for better performance and accessibility, collaborated on user-centered design improvements.",
-      image: "/servicecops.png",
-      achievements: [
-        "Improved responsiveness across devices",
-        "Enhanced user experience",
-        "Better code maintainability",
-      ],
-    },
-    {
-      title: "Mobile Developer Graduate Trainee",
-      company: "AutoFore App",
-      period: "Jul 2024 – Sep 2024",
-      description:
-        "Designed UI screens using Flutter, collaborated with cross-functional teams for seamless system integration.",
-      image: "/autofore.png",
-      achievements: [
-        "Enhanced user interface consistency",
-        "Improved user experience",
-        "Ensured seamless data flow",
-      ],
-    },
-  ];
+  const [experiences, setExperiences] = useState<ExperienceData[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch experiences from API
+  const fetchExperiences = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/experiences");
+      const data = await res.json();
+      if (data.success) setExperiences(data.data);
+    } catch (error) {
+      console.error("Error fetching experiences:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchExperiences();
+  }, [fetchExperiences]);
+
+  if (loading) {
+    return (
+      <section id="experience" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-gray-600">Loading experiences...</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section
       id="experience"
       className="py-20 bg-[url('/bg1.jpeg')] bg-cover bg-center bg-no-repeat overflow-hidden relative"
     >
-      {/* Semi-transparent overlay to ensure text readability */}
       <div className="absolute inset-0 bg-black opacity-60"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -75,27 +51,28 @@ const Experience = () => {
               Professional Experience
             </h2>
             <p className="text-lg text-gray-200">
-              Recent graduate trainee positions and internship experience
+              My work experiences that have shaped my career journey.
             </p>
           </div>
         </AnimatedSection>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {experiences.map((exp, index) => (
-            <AnimatedSection key={index}>
+            <AnimatedSection key={exp.id || index}>
               <div
                 className="bg-white/90 rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-xl transition-all duration-300 transform hover:scale-105 backdrop-blur-sm"
                 style={{ transitionDelay: `${index * 200}ms` }}
               >
-                {/* Image for each experience card */}
-                <div className="relative w-24 h-24 mb-4 rounded-full overflow-hidden border-2 border-gray-200">
-                  <Image
-                    src={exp.image}
-                    alt={exp.company}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+                {/* Image / Avatar */}
+                {exp.imageUrl && (
+                  <div className="w-24 h-24 mb-4 rounded-full overflow-hidden border-2 border-gray-200">
+                    <img
+                      src={exp.imageUrl}
+                      alt={exp.company}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                )}
 
                 {/* Text content */}
                 <div className="flex-1">
@@ -105,7 +82,7 @@ const Experience = () => {
                     </h3>
                     <p className="text-lg text-blue-600">{exp.company}</p>
                     <span className="inline-flex items-center px-3 py-1 mt-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                      {exp.period}
+                      {exp.startDate} – {exp.endDate}
                     </span>
                   </div>
                   <p className="text-gray-600 mb-4">{exp.description}</p>

@@ -13,7 +13,7 @@ const Footer = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
             <p className="text-gray-400 hover:text-white transition-colors duration-300">
-              © 2025 Mary Nakiboneka. Built with Next.js and Tailwind CSS.
+              © 2025 Mary Margret Nakiboneka.
             </p>
           </div>
         </div>

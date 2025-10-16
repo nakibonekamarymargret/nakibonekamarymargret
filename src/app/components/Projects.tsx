@@ -1,62 +1,46 @@
+"use client";
+
 import { ChevronRight } from "lucide-react";
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import AnimatedSection from "./AnimatedSection";
+import { ProjectData } from "../types/interface";
+
 
 const Projects = () => {
-  const projects = [
-    {
-      title: "Coffee Wilt Guard",
-      subtitle: "Mobile App for Disease Detection",
-      period: "Sep 2023 – Jun 2024",
-      description:
-        "Flutter mobile application using CNN for Coffee Wilt Disease detection, achieving 82% improved early detection among 50+ farmers.",
-      technologies: ["Flutter", "CNN", "Python", "Roboflow", "Google Colab"],
-      achievements: [
-        "82% improved early detection",
-        "100+ test cases executed",
-        "35% reduction in pre-deployment bugs",
-      ],
-    },
-    {
-      title: "Fixdental Management System",
-      subtitle: "Dental Clinic Management",
-      period: "Early 2025 – Present",
-      description:
-        "Comprehensive dental clinic management system with React frontend, focusing on appointment scheduling and patient data management.",
-      technologies: ["React", "JavaScript", "MySQL", "Node.js"],
-      achievements: [
-        "Streamlined clinic operations",
-        "Enhanced patient booking",
-        "Scalable architecture",
-      ],
-    },
-    {
-      title: "Medsave Backend",
-      subtitle: "Node.js & Firebase Backend APIs",
-      period: "May 2025 – August 2025",
-      description:
-        "Created backend APIs for Medsave platform using Node.js, Express, and Firebase, supporting user authentication, medical record management, and real-time updates.",
-      technologies: ["Node.js", "Express", "Firebase", "REST API", "Postman"],
-      achievements: [
-        "Real-time data management with Firebase",
-        "Secure API endpoints with JWT authentication",
-        "Improved API response times by 25%",
-      ],
-    },
-    {
-      title: "HR Management System",
-      subtitle: "Database & Frontend Development",
-      period: "Jun 2023 – Aug 2023",
-      description:
-        "Designed MySQL database schema and user-friendly interfaces for HR processes including staff registration and leave tracking.",
-      technologies: ["MySQL", "PHP", "HTML/CSS", "JavaScript"],
-      achievements: [
-        "30% increase in HR efficiency",
-        "Improved data accuracy",
-        "Streamlined record-keeping",
-      ],
-    },
-  ];
+  const [projects, setProjects] = useState<ProjectData[]>([])
+  const [loading, setLoading] = useState(true);
+
+  // Fetch projects from API
+  const fetchProjects = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/projects");
+      const data = await res.json();
+      if (data.success) setProjects(data.data);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchProjects();
+  }, [fetchProjects]);
+
+
+
+  if (loading) {
+    return (
+      <section id="projects" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <p className="text-gray-600">Loading projects...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="projects" className="py-20 bg-white">
@@ -75,9 +59,9 @@ const Projects = () => {
 
         {/* Project Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
+          {projects.map((project) => (
             <AnimatedSection
-              key={index}
+              key={project.id}
               className="group bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-xl transition-all duration-500 transform hover:scale-105 hover:-translate-y-2"
             >
               <div className="p-8 relative overflow-hidden">
@@ -133,6 +117,41 @@ const Projects = () => {
                       ))}
                     </ul>
                   </div>
+
+                  {/* Project Links */}
+                  {/* Project Links */}
+                  {(project.projectUrl || project.githubUrl) && (
+                    <div className="mt-4 flex gap-3">
+                      {project.projectUrl && (
+                        <a
+                          href={
+                            project.projectUrl.startsWith("http")
+                              ? project.projectUrl
+                              : `https://${project.projectUrl}`
+                          }
+                          target="_parent"
+                          rel="noopener noreferrer"
+                          className="text-sm text-blue-600 hover:text-blue-800 underline"
+                        >
+                          View Project →
+                        </a>
+                      )}
+                      {project.githubUrl && (
+                        <a
+                          href={
+                            project.githubUrl.startsWith("http")
+                              ? project.githubUrl
+                              : `https://${project.githubUrl}`
+                          }
+                          target="_parent"
+                          rel="noopener noreferrer"
+                          className="text-sm text-gray-600 hover:text-gray-800 underline"
+                        >
+                          GitHub →
+                        </a>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </AnimatedSection>

@@ -1,0 +1,96 @@
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id            String   @id @default(cuid())
+  title         String
+  subtitle      String
+  period        String
+  description   String   @db.Text
+  technologies  String[] // Array of tech stack
+  achievements  String[] // Array of achievements
+  projectUrl    String?  // Link to live project
+  githubUrl     String?  // Link to GitHub repo
+  imageUrl      String?  // Project image
+  order         Int      @default(0) // For sorting
+  published     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([order])
+}
+
+model Experience {
+  id           String   @id @default(cuid())
+  title        String
+  company      String
+  startDate    String   // e.g. "May 2025"
+  endDate      String   // e.g. "Present"
+  description  String   @db.Text
+  imageUrl     String
+  achievements String[]
+  order        Int      @default(0)
+  published    Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([order])
+}
+
+
+model Skill {
+  id        String   @id @default(cuid())
+  category  String   // e.g., "Programming Languages", "Databases & Backend"
+  name      String   // e.g., "Python", "MySQL"
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category, order])
+}
+
+model Contact {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String   @db.Text
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([read, createdAt])
+}
+
+model SiteSettings {
+  id             String   @id @default(cuid())
+  heroTitle      String
+  heroSubtitle   String   @db.Text
+  aboutText      String   @db.Text
+  profileImage   String
+  resumeUrl      String?
+  githubUrl      String?
+  linkedinUrl    String?
+  twitterUrl     String?
+  email          String
+  phone          String?
+  location       String?
+  updatedAt      DateTime @updatedAt
+}

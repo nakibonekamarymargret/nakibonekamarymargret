@@ -1,10 +1,8 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
-  import {
-    Menu,
-    X,
-   
-  } from "lucide-react";
+import Image from "next/image";
+import { Menu, X } from "lucide-react";
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
@@ -46,6 +44,7 @@ const Navbar = () => {
     { name: "Skills", id: "skills" },
     { name: "Contact", id: "contact" },
   ];
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -53,82 +52,88 @@ const Navbar = () => {
       setIsMenuOpen(false);
     }
   };
-   return (
-    <div>
-      <nav
-        // Changed background to a solid dark color to match your sections
-        className={`fixed top-0 w-full bg-gray-900 z-50 backdrop-blur-lg transform transition-all duration-500
-           ${isLoaded ? "translate-y-0" : "-translate-y-full"}`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6  lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex-shrink-0">
-              <h1
-                className={`text-3xl font-sans font-bold bg-linear-to-r from-blue-400 to-indigo-900 bg-clip-text font-extrabold text-transparent transform transition-all duration-700 ${isLoaded ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"}`}
-              >
-                Mary Margret Nakiboneka
-              </h1>
-            </div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-4">
-                {navigation.map((item, index) => (
-                  <button
-                    key={item.id}
-                    onClick={() => scrollToSection(item.id)}
-                    className={`px-3 cursor-pointer py-2 rounded-md text-sm font-medium transition-all duration-300 transform hover:scale-105 relative
-                      ${activeSection === item.id
-                        ? "text-blue-400 after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-blue-400 after:left-0 after:bottom-0"
-                        : "text-gray-200 hover:text-blue-400 hover:bg-white/10 after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-blue-400 after:left-0 after:bottom-0 after:transition-all hover:after:w-full"
-                      } ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"}`}
-                    style={{ transitionDelay: `${index * 100}ms` }}
-                  >
-                    {item.name}
-                  </button>
-                ))}
+  return (
+    <nav
+      className={`fixed top-0 w-full bg-gray-900 z-50 backdrop-blur-lg transform transition-all duration-500 ${isLoaded ? "translate-y-0" : "-translate-y-full"}`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo / Name */}
+          <div className="flex items-center space-x-3">
+            <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-md">
+              <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-white shadow-md">
+                <Image
+                  src="/mary.png"
+                  alt="Mary"
+                  fill
+                  sizes="(max-width: 768px) 48px, 56px" // improves image quality and Next.js optimization
+                  className="object-cover"
+                />
               </div>
             </div>
+            <h1
+              className={`text-xl font-bold text-white transform transition-all duration-700 ${isLoaded ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"}`}
+            >
+              Mary Margret Nakiboneka
+            </h1>
+          </div>
 
-            {/* Mobile menu button */}
-            <div className="md:hidden">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-6">
+            {navigation.map((item, index) => (
               <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-200 hover:text-gray-500 hover:bg-gray-100/10"
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 transform hover:scale-105 ${
+                  activeSection === item.id
+                    ? "text-blue-400"
+                    : "text-gray-200 hover:text-blue-400"
+                }`}
               >
-                {isMenuOpen ? (
-                  <X className="h-6 w-6" />
-                ) : (
-                  <Menu className="h-6 w-6" />
-                )}
+                {item.name}
               </button>
-            </div>
+            ))}
+          </div>
+
+          {/* Mobile Hamburger */}
+          <div className="md:hidden flex items-center space-x-3">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-200 hover:text-gray-500 hover:bg-gray-100/10"
+            >
+              {isMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </button>
           </div>
         </div>
+      </div>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-black/50 border-b border-gray-700">
-              {navigation.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors ${
-                    activeSection === item.id
-                      ? "bg-blue-600 text-white"
-                      : "text-gray-200 hover:bg-gray-100/10 hover:text-white"
-                  }`}
-                >
-                  {item.name}
-                </button>
-              ))}
-            </div>
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-black/70 border-t border-gray-700">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            {navigation.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium transition-colors ${
+                  activeSection === item.id
+                    ? "bg-blue-600 text-white"
+                    : "text-gray-200 hover:bg-gray-100/10 hover:text-white"
+                }`}
+              >
+                {item.name}
+              </button>
+            ))}
           </div>
-        )}
-      </nav>
-    </div>
+        </div>
+      )}
+    </nav>
   );
 };
 
-export default Navbar
+export default Navbar;
