@@ -2,7 +2,7 @@
 import { ChevronRight } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
 import AnimatedSection from "./AnimatedSection";
-import Image from "next/image";
+// import Image from "next/image";
 import { ExperienceData } from "../types/interface";
 
 const Experience = () => {

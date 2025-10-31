@@ -17,7 +17,7 @@ const About = () => {
       description:
         "Experience with Python, machine learning algorithms, and data visualization",
       delay: "200ms",
-    },
+    }, 
     {
       icon: <Users className="w-6 h-6" />,
       title: "Team Collaboration",
