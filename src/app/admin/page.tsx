@@ -12,6 +12,7 @@ import { MdEmail } from "react-icons/md";
 import { FaLocationDot, FaLinkedin } from "react-icons/fa6";
 import { FaGithub } from "react-icons/fa";
 import { BsFillTelephoneOutboundFill } from "react-icons/bs";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 
 
@@ -22,13 +23,22 @@ import { BsFillTelephoneOutboundFill } from "react-icons/bs";
  * @param {string} formPath - The URL path for the "Add" button (optional).
  * @param {object} router - The Next.js router object.
  */
+interface AdminSectionProps {
+  title: string;
+  children: React.ReactNode;
+  formPath?: string; // Optional prop
+  router: AppRouterInstance; // Import this type from 'next/navigation' for type safety
+  fullWidth?: boolean; // Optional prop
+}
+
 const AdminSection = ({
-  title,
+  
+title,
   children,
   formPath,
   router,
-  fullWidth = false,
-}) => (
+  fullWidth = false
+}: AdminSectionProps)  => (
   <div
     className={` p-6 rounded-xl  border border-gray-50  mb-8  top-4 transition-shadow duration-300 hover:shadow-2xl ${fullWidth ? "lg:col-span-3 md:col-span-2" : ""}`}
   >
@@ -181,7 +191,7 @@ const Admin = () => {
           formPath="/admin/skills/form"
           router={router}
         >
-          <SkillsTable type="Technical" />
+          <SkillsTable />
         </AdminSection>
 
         {/* Section 4: Soft Skills (Col 1) - New Section */}
@@ -190,7 +200,7 @@ const Admin = () => {
           formPath="/admin/softskills/form"
           router={router}
         >
-          <SkillsTable type="Soft" />
+          <SkillsTable />
         </AdminSection>
 
         {/* Section 5: Certifications (Col 2) */}
@@ -199,7 +209,7 @@ const Admin = () => {
           formPath="/admin/certifications/form"
           router={router}
         >
-          <SkillsTable type="Certifications" />
+          <SkillsTable />
         </AdminSection>
 
         {/* Section 6: What I'm Looking For (Col 3) */}

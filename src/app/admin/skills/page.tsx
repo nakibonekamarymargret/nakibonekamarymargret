@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
-import ProjectTable from "./Table";
+import SkillsTable from "./Table";
 
 
  
-const ProjectList = () => {
+const SkillList = () => {
   const router = useRouter();
 
 
@@ -14,23 +14,23 @@ const ProjectList = () => {
       <div className="max-w-5xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h2 className="text-2xl font-semibold">Projects</h2>
+            <h2 className="text-2xl font-semibold">Skills</h2>
             <p className="text-gray-400 text-sm">
-              Hi Mary ❤️ manage your projects — add, edit or remove them.
+              Hi Mary ❤️ manage your skills — add, edit or remove them.
             </p>
           </div>
           <button
-            onClick={() => router.push("/admin/projects/form")}
+            onClick={() => router.push("/admin/skills/form")}
             className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-md text-sm font-medium"
           >
-            + Add Project
+            + Add Skills
           </button>
         </div>
 
-        <ProjectTable/>
+        <SkillsTable />
       </div>
     </div>
   );
 };
 
-export default ProjectList;
+export default SkillList;

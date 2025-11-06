@@ -1,5 +1,3 @@
-// This is your Prisma schema file
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -54,11 +52,11 @@ model Experience {
   @@index([order])
 }
 
-
 model Skill {
   id        String   @id @default(cuid())
   category  String   // e.g., "Programming Languages", "Databases & Backend"
   name      String   // e.g., "Python", "MySQL"
+  icon      String?  // Optional icon for the skill
   order     Int      @default(0)
   published Boolean  @default(true)
   createdAt DateTime @default(now())

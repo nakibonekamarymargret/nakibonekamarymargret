@@ -1,88 +1,107 @@
-"use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-interface Project {
+// Define Skill type
+interface Skill {
   id: string;
-  title: string;
-  subtitle: string;
+  category: string;
+  name: string;
+  icon?: string;
+  order: number;
+  published: boolean;
 }
- 
-const ProjectTable = () => {
-  const [projects, setProjects] = useState<Project[]>([]);
+
+// Define type for grouped skills (object where key is category, and value is array of Skills)
+interface GroupedSkills {
+  [category: string]: Skill[];
+}
+
+const SkillTable = () => {
+  const [skills, setSkills] = useState<Skill[]>([]);
   const router = useRouter();
 
-  const fetchProjects = async () => {
-    const res = await fetch("/api/projects");
+  const fetchSkills = async () => {
+    const res = await fetch("/api/skills");
     const data = await res.json();
-    if (data.success) setProjects(data.data);
+    if (data.success) {
+      setSkills(data.data);
+    }
   };
 
   useEffect(() => {
-    fetchProjects();
+    fetchSkills();
   }, []);
 
-  const handleDelete = async (id: string) => {
-    if (confirm("Are you sure you want to delete this project?")) {
-      await fetch(`/api/projects?id=${id}`, { method: "DELETE" });
-      fetchProjects();
+  // Handle delete skill
+  const deleteSkill = async (id: string) => {
+    const res = await fetch(`/api/skills?id=${id}`, {
+      method: "DELETE",
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      setSkills((prev) => prev.filter((skill) => skill.id !== id));
+    } else {
+      alert("Failed to delete skill.");
     }
-  }; 
+  };
+
+  // Group skills by category
+  const groupedSkills: GroupedSkills = skills.reduce(
+    (acc: GroupedSkills, skill: Skill) => {
+      if (!acc[skill.category]) acc[skill.category] = [];
+      acc[skill.category].push(skill);
+      return acc;
+    },
+    {} as GroupedSkills
+  ); // Ensure acc is typed as GroupedSkills
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-gray-100 p-8">
-      <div className="max-w-5xl mx-auto">
-        
-        <div className="bg-[#1e293b] rounded-xl overflow-hidden shadow-lg">
-          <table className="min-w-full divide-y divide-gray-700">
-            <thead className="bg-[#111827] text-gray-300 text-left">
-              <tr>
-                <th className="px-6 py-3 text-sm font-semibold">Title</th>
-                <th className="px-6 py-3 text-sm font-semibold">Subtitle</th>
-                <th className="px-6 py-3 text-sm font-semibold text-right">
-                  Actions
-                </th>
+    <div className="overflow-x-auto">
+      <table className="min-w-full bg-white shadow-md border">
+        <thead>
+          <tr>
+            <th className="py-3 px-6 text-left">Category</th>
+            <th className="py-3 px-6 text-left">Skill</th>
+            <th className="py-3 px-6 text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Object.keys(groupedSkills).map((category) => (
+            <React.Fragment key={category}>
+              <tr className="bg-gray-100">
+                <td colSpan={3} className="py-3 px-6 font-semibold">
+                  {category}
+                </td>
               </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-800">
-              {projects.map((proj) => (
-                <tr key={proj.id} className="hover:bg-[#0f172a]/60 transition">
-                  <td className="px-6 py-4">{proj.title}</td>
-                  <td className="px-6 py-4 text-gray-400">{proj.subtitle}</td>
-                  <td className="px-6 py-4 flex justify-end gap-3">
+              {groupedSkills[category].map((skill) => (
+                <tr key={skill.id}>
+                  <td className="py-3 px-6">{skill.category}</td>
+                  <td className="py-3 px-6">{skill.name}</td>
+                  <td className="py-3 px-6 text-center">
                     <button
+                      className="bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded-lg"
                       onClick={() =>
-                        router.push(`/admin/projects/form?id=${proj.id}`)
+                        router.push(`/admin/skills?id=${skill.id}`)
                       }
-                      className="text-indigo-400 hover:text-indigo-300"
                     >
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDelete(proj.id)}
-                      className="text-red-400 hover:text-red-300"
+                      className="ml-2 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg"
+                      onClick={() => deleteSkill(skill.id)}
                     >
                       Delete
                     </button>
                   </td>
                 </tr>
               ))}
-              {projects.length === 0 && (
-                <tr>
-                  <td
-                    colSpan={3}
-                    className="px-6 py-6 text-center text-gray-500 italic"
-                  >
-                    No projects added yet.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+            </React.Fragment>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
 
-export default ProjectTable;
+export default SkillTable;
