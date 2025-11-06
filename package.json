@@ -13,7 +13,11 @@
     "db:studio": "prisma studio",
     "db:seed": "ts-node scripts/seed-admin.ts",
     "db:reset": "prisma migrate reset && npm run db:seed",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "migrate:prod": "DATABASE_URL=$DATABASE_URL_PRODUCTION npx prisma migrate deploy",
+    "push:prod": "DATABASE_URL=$DATABASE_URL_PRODUCTION npx prisma db push",
+    "seed:prod": "DATABASE_URL=$DATABASE_URL_PRODUCTION npx prisma db seed",
+    "studio:prod": "DATABASE_URL=$DATABASE_URL_PRODUCTION npx prisma studio"
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",
