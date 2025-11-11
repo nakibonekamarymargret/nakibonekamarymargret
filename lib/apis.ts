@@ -33,7 +33,16 @@ export const createSkill = (data: any) => prisma.skill.create({ data });
 export const updateSkill = (id: string, data: any) =>
   prisma.skill.update({ where: { id }, data });
 export const deleteSkill = (id: string) =>
-  prisma.skill.delete({ where: { id } });
+  prisma.skill.delete({ where: { id } })
+  ;// ---------------- Certificates ----------------
+export const getCertificate = () =>
+  prisma.skill.findMany({ orderBy: { category: "asc", order: "asc" } });
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const createtCertificate = (data: any) => prisma.skill.create({ data });
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const updatetCertificate = (id: string, data: any) =>
+  prisma.skill.update({ where: { id }, data });
+export const deletetCertificate = (id: string) => prisma.skill.delete({ where: { id } });
 
 // ---------------- Contacts (read-only) ----------------
 export const getContacts = () =>

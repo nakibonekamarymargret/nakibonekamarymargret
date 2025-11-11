@@ -6,11 +6,11 @@ export interface ProjectData {
   period: string;
   description: string;
   technologies: string[];
-  achievements: string[];
+  achievements?: string[];
   projectUrl?: string;
   githubUrl?: string;
 }
-
+ 
 // Admin interface
 export interface Admin {
   id?: string;
@@ -38,9 +38,16 @@ export interface ExperienceData {
 
 
 // Skill interface
-export interface Skill {
+export interface SkillData {
   id?: string;
   name: string;
   level?: string;
   category?: string;
+}
+
+export interface Certificates {
+  id?: string;
+  name: string;
+  institute?: string;
+  // category?: string;
 }

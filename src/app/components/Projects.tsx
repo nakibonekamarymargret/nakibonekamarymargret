@@ -100,23 +100,27 @@ const Projects = () => {
                       ))}
                     </div>
                   </div>
-
-                  <div>
-                    <h4 className="text-sm font-semibold text-gray-900 mb-2">
-                      Key Achievements:
-                    </h4>
-                    <ul className="space-y-1">
-                      {project.achievements.map((achievement, i) => (
-                        <li
-                          key={i}
-                          className="flex items-center text-sm text-gray-600"
-                        >
-                          <ChevronRight className="h-3 w-3 text-blue-600 mr-2 flex-shrink-0" />
-                          {achievement}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  {project.achievements && project.achievements.length > 0 && (
+                    <>
+                      <div>
+                        <h4 className="text-sm font-semibold text-gray-900 mb-2">
+                          Key Achievements:
+                        </h4>
+                        <ul className="space-y-1">
+                          {project.achievements.map((achievement, i) => (
+                            <li
+                              key={i}
+                              className="flex items-center text-sm text-gray-600"
+                            >
+                              <ChevronRight className="h-3 w-3 text-blue-600 mr-2 flex-shrink-0" />
+                              {achievement}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </>
+                  )}
+                  
 
                   {/* Project Links */}
                   {/* Project Links */}

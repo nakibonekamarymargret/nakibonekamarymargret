@@ -58,7 +58,7 @@ const SkillTable = () => {
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full bg-white shadow-md border">
+      <table className="min-w-full  shadow-md border">
         <thead>
           <tr>
             <th className="py-3 px-6 text-left">Category</th>
