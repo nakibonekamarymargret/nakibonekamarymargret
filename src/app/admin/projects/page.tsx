@@ -13,7 +13,7 @@ const ProjectList = () => {
     <div className="min-h-screen bg-[#0f172a] text-gray-100 p-8">
       <div className="max-w-5xl mx-auto">
         <div className="flex justify-between items-center mb-6">
-          <div>
+          <div> 
             <h2 className="text-2xl font-semibold">Projects</h2>
             <p className="text-gray-400 text-sm">
               Hi Mary ❤️ manage your projects — add, edit or remove them.

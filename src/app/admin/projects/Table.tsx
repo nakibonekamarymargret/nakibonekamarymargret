@@ -21,7 +21,7 @@ const ProjectTable = () => {
   useEffect(() => {
     fetchProjects();
   }, []);
-
+ 
   const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to delete this project?")) {
       await fetch(`/api/projects?id=${id}`, { method: "DELETE" });

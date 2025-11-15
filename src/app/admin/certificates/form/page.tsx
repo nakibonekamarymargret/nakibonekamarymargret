@@ -3,14 +3,14 @@
 export const dynamic = "force-dynamic"; // Disable static pre-rendering
 
 import React, { Suspense } from "react";
-import ProjectForm from "./ProjectForm";
+import CertForm from "./CertForm";
 
 export default function CertFormPage() {
   return (
     <Suspense
       fallback={<div className="p-10 text-gray-100">Loading form...</div>}
     >
-      <ProjectForm />
+      <CertForm />
     </Suspense>
   );
 }
