@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+
+import React, { Suspense } from "react";
 import { useRouter } from "next/navigation";
 import CertTable from "./Table";
 
@@ -13,7 +14,7 @@ const CertList = () => {
           <div>
             <h2 className="text-2xl font-semibold">Certificates</h2>
             <p className="text-gray-400 text-sm">
-              Hi Mary ❤️ manage your certifictes — add, edit or remove them.
+              Hi Mary ❤️ manage your certificates — add, edit or remove them.
             </p>
           </div>
           <button
@@ -24,7 +25,13 @@ const CertList = () => {
           </button>
         </div>
 
-        <CertTable />
+        <Suspense
+          fallback={
+            <div className="text-center py-8">Loading certificates...</div>
+          }
+        >
+          <CertTable />
+        </Suspense>
       </div>
     </div>
   );

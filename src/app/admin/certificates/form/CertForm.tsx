@@ -2,16 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import { Certificates } from "../../../types/interface";
-import { Certificate } from "@prisma/client";
 
 const useSearchParams = () => {
-  // This is a placeholder that simulates reading an 'id' from the URL for the purposes of this standalone environment.
-  // In a real Next.js app, this logic would not be needed.
   const urlParams = new URLSearchParams(window.location.search);
   return {
     get: (key: string) => urlParams.get(key),
   };
 };
+
 const useRouter = () => {
   return {
     push: (path: string) => console.log(`Navigating to: ${path}`),
@@ -24,21 +22,22 @@ const CertForm = () => {
   const id = searchParams.get("id");
   const [certificate, setCertificate] = useState<Certificates>({
     name: "",
-  institute: ""
-  // category?: string
+    institute: "",
   });
-
-  const [editingId, setEditingId] = useState<string | null>(null);
-
 
   useEffect(() => {
     if (id) {
-      fetch(`/api/certificate?id = ${id}`)
+      fetch(`/api/certificates?id=${id}`)
         .then((res) => res.json())
-      .then((data) => data.success && setCertificate(data.data))
+        .then((data) => {
+          if (data.success) {
+            setCertificate(data.data);
+          }
+        })
+        .catch((error) => console.error("Error fetching certificate:", error));
     }
-    
   }, [id]);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -46,31 +45,27 @@ const CertForm = () => {
     setCertificate((prev: Certificates) => ({ ...prev, [name]: value }));
   };
 
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const method = editingId ? "PUT" : "POST";
+    const method = id ? "PUT" : "POST";
     const body = id ? { ...certificate, id } : certificate;
-    
-    await fetch("/api/certificates", {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
 
-      router.push("/admin/certificates");
-    
-  };
+    try {
+      const res = await fetch("/api/certificates", {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Delete this certificate?")) return;
+      const data = await res.json();
 
-    const res = await fetch(`/api/certificates?id=${id}`, {
-      method: "DELETE",
-    });
-
-  
+      if (data.success) {
+        router.push("/admin/certificates");
+      }
+    } catch (error) {
+      console.error("Error submitting certificate:", error);
+    }
   };
 
   return (
@@ -91,6 +86,7 @@ const CertForm = () => {
           </label>
           <input
             type="text"
+            name="name"
             value={certificate.name}
             onChange={handleChange}
             className="w-full border rounded-lg px-3 py-2"
@@ -104,6 +100,7 @@ const CertForm = () => {
           </label>
           <input
             type="text"
+            name="institute"
             value={certificate.institute}
             onChange={handleChange}
             className="w-full border rounded-lg px-3 py-2"
@@ -119,8 +116,6 @@ const CertForm = () => {
           </button>
         </div>
       </form>
-
-      
     </div>
   );
 };

@@ -1,31 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-
-
+import { useSearchParams, useRouter } from "next/navigation";
 import { ProjectData } from "../../../types/interface";
 
-// MOCKING useRouter and useSearchParams for compilation purposes
-// In a real Next.js environment, these imports would be correct.
-const useSearchParams = () => {
-  // This is a placeholder that simulates reading an 'id' from the URL for the purposes of this standalone environment.
-  // In a real Next.js app, this logic would not be needed.
-  const urlParams = new URLSearchParams(window.location.search);
-  return {
-    get: (key: string) => urlParams.get(key),
-  };
-};
-
-const useRouter = () => {
-  // This is a placeholder for the router functionality.
-  return {
-    push: (path: string) => console.log(`Navigating to: ${path}`),
-  };
-};
-
 const ProjectForm = () => {
-  const params = useSearchParams();
+  const searchParams = useSearchParams();
   const router = useRouter();
-  const id = params.get("id");
+  const id = searchParams.get("id");
 
   const [project, setProject] = useState<ProjectData>({
     title: "",
@@ -40,11 +21,14 @@ const ProjectForm = () => {
 
   useEffect(() => {
     if (id) {
-      // NOTE: In a live environment, window.location.origin might be required
-      // depending on how relative URLs are handled during development.
       fetch(`/api/projects?id=${id}`)
         .then((res) => res.json())
-        .then((data) => data.success && setProject(data.data));
+        .then((data) => {
+          if (data.success) {
+            setProject(data.data);
+          }
+        })
+        .catch((error) => console.error("Error fetching project:", error));
     }
   }, [id]);
 
@@ -60,14 +44,12 @@ const ProjectForm = () => {
     field: "technologies" | "achievements",
     index: number
   ) => {
-    // FIX: Use the nullish coalescing operator to default to an empty array if project[field] is undefined
     const newArr = [...(project[field] || [])];
     newArr[index] = e.target.value;
     setProject((prev) => ({ ...prev, [field]: newArr }));
   };
 
   const addArrayItem = (field: "technologies" | "achievements") => {
-    // Added safety check for the previous state array as well
     setProject((prev) => ({ ...prev, [field]: [...(prev[field] || []), ""] }));
   };
 
@@ -75,7 +57,6 @@ const ProjectForm = () => {
     field: "technologies" | "achievements",
     index: number
   ) => {
-    // FIX: Use the nullish coalescing operator to default to an empty array for filtering
     const newArr = (project[field] || []).filter((_, i) => i !== index);
     setProject((prev) => ({ ...prev, [field]: newArr }));
   };
@@ -85,14 +66,21 @@ const ProjectForm = () => {
     const method = id ? "PUT" : "POST";
     const body = id ? { ...project, id } : project;
 
-    await fetch("/api/projects", {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
+    try {
+      const res = await fetch("/api/projects", {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
 
-    // We replace router.push with a console log or local navigation substitute
-    router.push("/admin/projects");
+      const data = await res.json();
+
+      if (data.success) {
+        router.push("/admin/projects");
+      }
+    } catch (error) {
+      console.error("Error submitting project:", error);
+    }
   };
 
   return (
@@ -110,6 +98,7 @@ const ProjectForm = () => {
             onChange={handleChange}
             placeholder="Project Title"
             className="input-field"
+            required
           />
           <input
             name="subtitle"
