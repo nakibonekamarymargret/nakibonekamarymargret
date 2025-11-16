@@ -10,8 +10,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: true, data: experience });
   }
 
-  const experiences = await prisma.experience.findMany({ orderBy: { order: "asc" } });
-  return NextResponse.json({ success: true, data: experiences });
+const experiences = await prisma.experience.findMany({
+  orderBy: { priority: "asc" },
+});  return NextResponse.json({ success: true, data: experiences });
 }
 
 export async function POST(req: NextRequest) {
