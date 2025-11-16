@@ -50,7 +50,7 @@ export interface Admin {
 }
 
 // Experience interface
-interface ExperienceDataData {
+interface ExperienceData {
   // Basic Info
   title: string;
   company: string;
