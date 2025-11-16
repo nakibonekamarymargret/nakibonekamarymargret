@@ -10,7 +10,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-interface EnhancedProject {
+interface Project {
   id: string;
   title: string;
   subtitle: string;
@@ -25,7 +25,7 @@ interface EnhancedProject {
 }
 
 const ProjectTable = () => {
-  const [projects, setProjects] = useState<EnhancedProject[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -36,13 +36,11 @@ const ProjectTable = () => {
       const data = await res.json();
       if (data.success) {
         // Sort by featured and priority
-        const sorted = data.data.sort(
-          (a: EnhancedProject, b: EnhancedProject) => {
-            if (a.featured && !b.featured) return -1;
-            if (!a.featured && b.featured) return 1;
-            return (b.priority || 0) - (a.priority || 0);
-          }
-        );
+        const sorted = data.data.sort((a: Project, b: Project) => {
+          if (a.featured && !b.featured) return -1;
+          if (!a.featured && b.featured) return 1;
+          return (b.priority || 0) - (a.priority || 0);
+        });
         setProjects(sorted);
       }
     } catch (error) {

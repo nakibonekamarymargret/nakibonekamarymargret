@@ -48,7 +48,7 @@ const categories = [
   "Other",
 ];
 
-const ProjectForm = () => {
+const EnhancedProjectForm = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const id = searchParams.get("id");
@@ -58,11 +58,21 @@ const ProjectForm = () => {
     subtitle: "",
     period: "",
     description: "",
+    thumbnailUrl: "",
+    videoUrl: "",
     technologies: [],
+    category: "",
+    role: "",
+    teamSize: "",
     achievements: [],
     metrics: [],
     challenges: [],
     screenshots: [],
+    projectUrl: "",
+    githubUrl: "",
+    liveDemo: "",
+    caseStudyUrl: "",
+    status: "",
     featured: false,
     priority: 0,
   });
@@ -530,4 +540,4 @@ const ProjectForm = () => {
   );
 };
 
-export default ProjectForm;
+export default EnhancedProjectForm;

@@ -4,7 +4,7 @@ import { ChevronRight, ExternalLink, Github, Video, Award } from "lucide-react";
 import React, { useState, useEffect, useCallback } from "react";
 import AnimatedSection from "./AnimatedSection";
 
-interface EnhancedProjectData {
+interface ProjectData {
   id?: string;
   title: string;
   subtitle: string;
@@ -30,7 +30,7 @@ interface EnhancedProjectData {
 }
 
 const Projects = () => {
-  const [projects, setProjects] = useState<EnhancedProjectData[]>([]);
+  const [projects, setProjects] = useState<ProjectData[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>("all");
 
@@ -41,13 +41,11 @@ const Projects = () => {
       const data = await res.json();
       if (data.success) {
         // Sort by priority and featured status
-        const sorted = data.data.sort(
-          (a: EnhancedProjectData, b: EnhancedProjectData) => {
-            if (a.featured && !b.featured) return -1;
-            if (!a.featured && b.featured) return 1;
-            return (b.priority || 0) - (a.priority || 0);
-          }
-        );
+        const sorted = data.data.sort((a: ProjectData, b: ProjectData) => {
+          if (a.featured && !b.featured) return -1;
+          if (!a.featured && b.featured) return 1;
+          return (b.priority || 0) - (a.priority || 0);
+        });
         setProjects(sorted);
       }
     } catch (error) {
