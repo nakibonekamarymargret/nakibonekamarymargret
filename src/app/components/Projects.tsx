@@ -1,22 +1,55 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ExternalLink, Github, Video, Award } from "lucide-react";
 import React, { useState, useEffect, useCallback } from "react";
 import AnimatedSection from "./AnimatedSection";
-import { ProjectData } from "../types/interface";
 
+interface EnhancedProjectData {
+  id?: string;
+  title: string;
+  subtitle: string;
+  period: string;
+  description: string;
+  thumbnailUrl?: string;
+  screenshots?: string[];
+  videoUrl?: string;
+  technologies: string[];
+  category?: string;
+  role?: string;
+  teamSize?: string;
+  achievements: string[];
+  metrics?: string[];
+  challenges?: string[];
+  projectUrl?: string;
+  githubUrl?: string;
+  liveDemo?: string;
+  caseStudyUrl?: string;
+  status?: string;
+  featured?: boolean;
+  priority?: number;
+}
 
 const Projects = () => {
-  const [projects, setProjects] = useState<ProjectData[]>([])
+  const [projects, setProjects] = useState<EnhancedProjectData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<string>("all");
 
-  // Fetch projects from API
   const fetchProjects = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch("/api/projects");
       const data = await res.json();
-      if (data.success) setProjects(data.data);
+      if (data.success) {
+        // Sort by priority and featured status
+        const sorted = data.data.sort(
+          (a: EnhancedProjectData, b: EnhancedProjectData) => {
+            if (a.featured && !b.featured) return -1;
+            if (!a.featured && b.featured) return 1;
+            return (b.priority || 0) - (a.priority || 0);
+          }
+        );
+        setProjects(sorted);
+      }
     } catch (error) {
       console.error("Error fetching projects:", error);
     } finally {
@@ -28,7 +61,12 @@ const Projects = () => {
     fetchProjects();
   }, [fetchProjects]);
 
-
+  const categories = [
+    "all",
+    ...new Set(projects.map((p) => p.category).filter(Boolean)),
+  ];
+  const filteredProjects =
+    filter === "all" ? projects : projects.filter((p) => p.category === filter);
 
   if (loading) {
     return (
@@ -43,124 +81,275 @@ const Projects = () => {
   }
 
   return (
-    <section id="projects" className="py-20 bg-white">
+    <section
+      id="projects"
+      className="py-20 bg-gradient-to-br from-gray-50 to-white"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <AnimatedSection>
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Featured Projects
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Showcasing my technical expertise through real-world applications
+              that deliver measurable results
             </p>
           </div>
         </AnimatedSection>
 
+        {/* Category Filter */}
+        {/* Category Filter */}
+        {categories.length > 1 && (
+          <AnimatedSection>
+            <div className="flex justify-center gap-3 mb-12 flex-wrap">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => {
+                    if (cat) {
+                      setFilter(cat); // Ensure cat is not undefined
+                    }
+                  }}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                    filter === cat
+                      ? "bg-blue-600 text-white shadow-lg scale-105"
+                      : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-200"
+                  }`}
+                >
+                  {cat === "all" ? "All Projects" : cat}
+                </button>
+              ))}
+            </div>
+          </AnimatedSection>
+        )}
+
         {/* Project Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {projects.map((project) => (
+          {filteredProjects.map((project) => (
             <AnimatedSection
               key={project.id}
-              className="group bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-xl transition-all duration-500 transform hover:scale-105 hover:-translate-y-2"
+              className="group bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-[1.02] overflow-hidden"
             >
-              <div className="p-8 relative overflow-hidden">
+              {/* Featured Badge */}
+              {project.featured && (
+                <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white text-xs font-bold px-4 py-1 flex items-center gap-1">
+                  <Award className="h-3 w-3" />
+                  FEATURED PROJECT
+                </div>
+              )}
+
+              {/* Thumbnail Image */}
+              {project.thumbnailUrl && (
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={project.thumbnailUrl}
+                    alt={project.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  {project.status && (
+                    <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-medium bg-white/90 text-gray-800">
+                      {project.status}
+                    </span>
+                  )}
+                </div>
+              )}
+
+              <div className="p-6 relative">
                 {/* Animated background gradient */}
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                 <div className="relative z-10">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors duration-300">
-                        {project.title}
-                      </h3>
-                      <p className="text-sm text-blue-600 mb-2">
-                        {project.subtitle}
-                      </p>
-                      <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-800 group-hover:bg-blue-100 group-hover:text-blue-800 transition-colors duration-300">
-                        {project.period}
-                      </span>
+                  {/* Header */}
+                  <div className="mb-4">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1">
+                        <h3 className="text-2xl font-bold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors duration-300">
+                          {project.title}
+                        </h3>
+                        {project.subtitle && (
+                          <p className="text-sm text-blue-600 font-medium mb-2">
+                            {project.subtitle}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Metadata */}
+                    <div className="flex flex-wrap gap-2 text-xs text-gray-600 mb-3">
+                      {project.period && (
+                        <span className="px-3 py-1 bg-gray-100 rounded-full">
+                          📅 {project.period}
+                        </span>
+                      )}
+                      {project.role && (
+                        <span className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full">
+                          👤 {project.role}
+                        </span>
+                      )}
+                      {project.teamSize && (
+                        <span className="px-3 py-1 bg-purple-50 text-purple-700 rounded-full">
+                          👥 {project.teamSize}
+                        </span>
+                      )}
                     </div>
                   </div>
 
-                  <p className="text-gray-600 mb-4">{project.description}</p>
+                  {/* Description */}
+                  <p className="text-gray-700 mb-4 leading-relaxed">
+                    {project.description}
+                  </p>
 
+                  {/* Technologies */}
                   <div className="mb-4">
-                    <h4 className="text-sm font-semibold text-gray-900 mb-2">
-                      Technologies Used:
+                    <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                      <span className="w-1 h-4 bg-blue-600 rounded"></span>
+                      Tech Stack
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {project.technologies.map((tech, i) => (
                         <span
                           key={i}
-                          className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-800 transform hover:scale-110 transition-transform duration-200"
+                          className="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 border border-blue-200 transform hover:scale-110 transition-transform duration-200"
                         >
                           {tech}
                         </span>
                       ))}
                     </div>
                   </div>
-                  {project.achievements && project.achievements.length > 0 && (
-                    <>
-                      <div>
-                        <h4 className="text-sm font-semibold text-gray-900 mb-2">
-                          Key Achievements:
-                        </h4>
-                        <ul className="space-y-1">
-                          {project.achievements.map((achievement, i) => (
-                            <li
-                              key={i}
-                              className="flex items-center text-sm text-gray-600"
-                            >
-                              <ChevronRight className="h-3 w-3 text-blue-600 mr-2 flex-shrink-0" />
-                              {achievement}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </>
-                  )}
-                  
 
-                  {/* Project Links */}
-                  {/* Project Links */}
-                  {(project.projectUrl || project.githubUrl) && (
-                    <div className="mt-4 flex gap-3">
-                      {project.projectUrl && (
-                        <a
-                          href={
-                            project.projectUrl.startsWith("http")
-                              ? project.projectUrl
-                              : `https://${project.projectUrl}`
-                          }
-                          target="_parent"
-                          rel="noopener noreferrer"
-                          className="text-sm text-blue-600 hover:text-blue-800 underline"
-                        >
-                          View Project →
-                        </a>
-                      )}
-                      {project.githubUrl && (
-                        <a
-                          href={
-                            project.githubUrl.startsWith("http")
-                              ? project.githubUrl
-                              : `https://${project.githubUrl}`
-                          }
-                          target="_parent"
-                          rel="noopener noreferrer"
-                          className="text-sm text-gray-600 hover:text-gray-800 underline"
-                        >
-                          GitHub →
-                        </a>
-                      )}
+                  {/* Metrics */}
+                  {project.metrics && project.metrics.length > 0 && (
+                    <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                      <h4 className="text-sm font-semibold text-green-900 mb-2 flex items-center gap-2">
+                        📊 Impact & Results
+                      </h4>
+                      <ul className="space-y-1">
+                        {project.metrics.map((metric, i) => (
+                          <li
+                            key={i}
+                            className="flex items-center text-sm text-green-800"
+                          >
+                            <ChevronRight className="h-3 w-3 text-green-600 mr-2 flex-shrink-0" />
+                            <span className="font-medium">{metric}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   )}
+
+                  {/* Achievements */}
+                  {project.achievements && project.achievements.length > 0 && (
+                    <div className="mb-4">
+                      <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                        <span className="w-1 h-4 bg-purple-600 rounded"></span>
+                        Key Achievements
+                      </h4>
+                      <ul className="space-y-1">
+                        {project.achievements.map((achievement, i) => (
+                          <li
+                            key={i}
+                            className="flex items-start text-sm text-gray-700"
+                          >
+                            <ChevronRight className="h-4 w-4 text-blue-600 mr-2 flex-shrink-0 mt-0.5" />
+                            {achievement}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Challenges */}
+                  {project.challenges && project.challenges.length > 0 && (
+                    <div className="mb-4">
+                      <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                        🎯 Challenges Solved
+                      </h4>
+                      <ul className="space-y-1">
+                        {project.challenges.slice(0, 2).map((challenge, i) => (
+                          <li key={i} className="text-sm text-gray-600 italic">
+                            • {challenge}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Links */}
+                  <div className="flex flex-wrap gap-3 mt-6 pt-4 border-t border-gray-200">
+                    {project.liveDemo && (
+                      <a
+                        href={
+                          project.liveDemo.startsWith("http")
+                            ? project.liveDemo
+                            : `https://${project.liveDemo}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-300 text-sm font-medium shadow-md hover:shadow-lg transform hover:scale-105"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                        Live Demo
+                      </a>
+                    )}
+                    {project.githubUrl && (
+                      <a
+                        href={
+                          project.githubUrl.startsWith("http")
+                            ? project.githubUrl
+                            : `https://${project.githubUrl}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-all duration-300 text-sm font-medium shadow-md hover:shadow-lg transform hover:scale-105"
+                      >
+                        <Github className="h-4 w-4" />
+                        GitHub
+                      </a>
+                    )}
+                    {project.videoUrl && (
+                      <a
+                        href={
+                          project.videoUrl.startsWith("http")
+                            ? project.videoUrl
+                            : `https://${project.videoUrl}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-300 text-sm font-medium shadow-md hover:shadow-lg transform hover:scale-105"
+                      >
+                        <Video className="h-4 w-4" />
+                        Video
+                      </a>
+                    )}
+                    {project.caseStudyUrl && (
+                      <a
+                        href={
+                          project.caseStudyUrl.startsWith("http")
+                            ? project.caseStudyUrl
+                            : `https://${project.caseStudyUrl}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all duration-300 text-sm font-medium"
+                      >
+                        📝 Case Study
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             </AnimatedSection>
           ))}
         </div>
+
+        {filteredProjects.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-600">No projects found in this category.</p>
+          </div>
+        )}
       </div>
     </section>
   );

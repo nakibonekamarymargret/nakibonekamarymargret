@@ -15,41 +15,101 @@ model Admin {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-
 model Project {
   id            String   @id @default(cuid())
+  
+  // Basic Info
   title         String
   subtitle      String
   period        String
   description   String   @db.Text
+  
+  // Visual elements
+  thumbnailUrl  String?
+  screenshots   String[] // Array of screenshot URLs
+  videoUrl      String?
+  imageUrl      String?  // Keep for backward compatibility
+  
+  // Technical details
   technologies  String[] // Array of tech stack
+  category      String?  // "Web App", "Mobile App", etc.
+  role          String?  // "Lead Developer", "Full Stack Developer"
+  teamSize      String?  // "Solo", "2-5", "5+"
+  
+  // Impact & Results
   achievements  String[] // Array of achievements
+  metrics       String[] // Quantifiable results
+  challenges    String[] // Problems solved
+  
+  // Links
   projectUrl    String?  // Link to live project
   githubUrl     String?  // Link to GitHub repo
-  imageUrl      String?  // Project image
-  order         Int      @default(0) // For sorting
+  liveDemo      String?  // Live demo URL
+  caseStudyUrl  String?  // Case study/blog post URL
+  
+  // Status & Visibility
+  status        String?  // "Completed", "In Progress", "Maintained"
+  featured      Boolean  @default(false)
+  priority      Int      @default(0) // Display order (0-10)
+  
+  // Legacy fields
+  order         Int      @default(0) // For sorting (kept for backward compatibility)
   published     Boolean  @default(true)
+  
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-
+  
   @@index([order])
+  @@index([priority])
+  @@index([featured])
 }
 
 model Experience {
-  id           String   @id @default(cuid())
-  title        String
-  company      String
-  startDate    String   // e.g. "May 2025"
-  endDate      String   // e.g. "Present"
-  description  String   @db.Text
-  imageUrl     String
-  achievements String[]
-  order        Int      @default(0)
-  published    Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  @@index([order])
+  id              String   @id @default(cuid())
+  
+  // Basic Info
+  title           String   // Job title
+  company         String
+  companyUrl      String?
+  location        String?  // "Remote", "Kampala, Uganda", "Hybrid"
+  employmentType  String?  // "Full-time", "Part-time", "Contract", "Freelance", "Internship"
+  
+  // Dates
+  startDate       String
+  endDate         String
+  isCurrent       Boolean  @default(false) // Currently working here
+  
+  // Visual
+  imageUrl        String?  // Company logo
+  companySize     String?  // "1-10", "11-50", "51-200", "200+"
+  industry        String?  // "Tech", "Finance", "Healthcare", etc.
+  
+  // Content
+  description     String   @db.Text
+  achievements    String[] // Array of achievements
+  
+  // Technical Details
+  technologies    String[] // Tech stack used in this role
+  responsibilities String[] // Day-to-day duties
+  
+  // Impact & Metrics
+  metrics         String[] // Quantifiable results
+  projects        String[] // Key projects worked on
+  
+  // Skills Developed
+  skillsGained    String[] // New skills learned
+  
+  // Display
+  featured        Boolean  @default(false)
+  priority        Int      @default(0) // Display order
+  published       Boolean  @default(true)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([priority])
+  @@index([featured])
+  @@index([isCurrent])
 }
 
 model Skill {
