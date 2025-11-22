@@ -1,149 +1,419 @@
+"use client";
+
 import {
+  ChevronRight,
+  ExternalLink,
+  Github,
+  Video,
   Award,
-  BarChart3,
-  Code,
-  Database,
-  Smartphone,
-  Server,
+  ChevronsUp,
+  ChevronsDown,
 } from "lucide-react";
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import AnimatedSection from "./AnimatedSection";
 
-const Skills = () => {
-  const skillCategories = [
-    {
-      category: "Programming Languages",
-      icon: <Code className="w-6 h-6" />,
-      skills: ["Python", "Java", "JavaScript (React)", "SQL", "Dart", "PHP"],
-    },
-    {
-      category: "Data Analysis & ML",
-      icon: <BarChart3 className="w-6 h-6" />,
-      skills: [
-        "Machine Learning",
-        "CNN",
-        "Data Modeling",
-        "Statistical Analysis",
-        "Data Visualization",
-        "Predictive Analysis",
-      ],
-    },
-    {
-      category: "Databases & Backend",
-      icon: <Database className="w-6 h-6" />,
-      skills: [
-        "MySQL",
-        "PostgreSQL",
-        "Firebase",
-        "Node.js",
-        "REST APIs",
-        "Git/GitHub",
-        "Spring Boot",
-      ],
-    },
-    {
-      category: "Mobile & Web",
-      icon: <Smartphone className="w-6 h-6" />,
-      skills: [
-        "Flutter",
-        "React",
-        "Tailwind CSS",
-        "Responsive Design",
-        "UI/UX Design",
-        "API Integration",
-      ],
-    },
-    {
-      category: "Server & Deployment",
-      icon: <Server className="w-6 h-6" />,
-      skills: ["Firebase Hosting", "Heroku", "Vercel", "AWS", "CI/CD"],
-    },
+interface ProjectData {
+  id?: string;
+  title: string;
+  subtitle: string;
+  period: string;
+  description: string;
+  thumbnailUrl?: string;
+  screenshots?: string[];
+  videoUrl?: string;
+  technologies: string[];
+  category?: string;
+  role?: string;
+  teamSize?: string;
+  achievements: string[];
+  metrics?: string[];
+  challenges?: string[];
+  projectUrl?: string;
+  githubUrl?: string;
+  liveDemo?: string;
+  caseStudyUrl?: string;
+  status?: string;
+  featured?: boolean;
+  priority?: number;
+}
+
+const MAX_PROJECT_DESCRIPTION_LENGTH = 200;
+
+const Projects = () => {
+  const [projects, setProjects] = useState<ProjectData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<string>("all");
+  // State to track which project descriptions are expanded
+  const [expandedProjects, setExpandedProjects] = useState<
+    Record<string, boolean>
+  >({});
+
+  const fetchProjects = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/projects");
+      const data = await res.json();
+      if (data.success) {
+        // Sort by priority and featured status
+        const sorted = data.data.sort((a: ProjectData, b: ProjectData) => {
+          if (a.featured && !b.featured) return -1;
+          if (!a.featured && b.featured) return 1;
+          return (b.priority || 0) - (a.priority || 0);
+        });
+        setProjects(sorted);
+      }
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Function to toggle the expanded state of a specific project description
+  const toggleDescription = (id: string) => {
+    setExpandedProjects((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, [fetchProjects]);
+
+  const categories = [
+    "all",
+    ...new Set(projects.map((p) => p.category).filter(Boolean)),
   ];
+  const filteredProjects =
+    filter === "all" ? projects : projects.filter((p) => p.category === filter);
+
+  if (loading) {
+    return (
+      <section id="projects" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <p className="text-gray-600">Loading projects...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section
-      id="skills"
-      className="py-20 bg-[url('/bg4.jpeg')] bg-cover bg-center bg-no-repeat overflow-hidden relative"
+      id="projects"
+      className="py-20 bg-gradient-to-br from-gray-50 to-white"
     >
-      <div className="absolute inset-0 bg-black/100 opacity-80"></div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
         <AnimatedSection>
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-white mb-4">
-              Technical Skills
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Featured Projects
             </h2>
-            <p className="text-lg text-gray-200">
-              Comprehensive technical expertise across multiple domains
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Showcasing my technical expertise through real-world applications
+              that deliver measurable results
             </p>
           </div>
         </AnimatedSection>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {skillCategories.map((category, index) => (
-            <AnimatedSection
-              key={index}
-              className="group bg-white/10 rounded-lg shadow-md p-6 transform transition-all duration-700 hover:scale-105 hover:shadow-xl backdrop-blur-sm"
-            >
-              <div style={{ transitionDelay: `${index * 150}ms` }}>
-                <div className="flex items-center mb-4">
-                  <div className="inline-flex items-center justify-center w-10 h-10 bg-blue-600 text-white rounded-lg mr-3 group-hover:bg-blue-700 group-hover:rotate-12 transition-all duration-300">
-                    {category.icon}
-                  </div>
-                  <h3 className="text-lg font-semibold text-white group-hover:text-blue-400 transition-colors duration-300">
-                    {category.category}
-                  </h3>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  {category.skills.map((skill, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center text-sm text-gray-300 group/skill hover:text-blue-400 transition-colors duration-200"
-                      style={{ animationDelay: `${i * 100}ms` }}
-                    >
-                      <div className="w-2 h-2 bg-blue-600 rounded-full mr-2 flex-shrink-0 group-hover/skill:animate-ping"></div>
-                      {skill}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </AnimatedSection>
-          ))}
-        </div>
-
-        {/* Certifications */}
-        <div className="mt-12 text-center">
+        {/* Category Filter */}
+        {categories.length > 1 && (
           <AnimatedSection>
-            <div className="bg-white/10 rounded-lg shadow-md p-8 transform hover:scale-105 transition-all duration-500 hover:shadow-xl backdrop-blur-sm">
-              <div className="flex items-center justify-center mb-4">
-                <Award className="w-8 h-8 text-blue-400 mr-2 animate-pulse" />
-                <h3 className="text-xl font-semibold text-white">
-                  Certifications
-                </h3>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm text-gray-200">
-                {[
-                  "UI/UX Design (Coursera)",
-                  "PHP Development (Sololearn)",
-                  "Responsive Web Design (FreeCodeCamp)",
-                  "React Development (FreeCodeCamp)",
-                  "JavaScript Algorithms (FreeCodeCamp)",
-                  "Machine Learning (MITx)",
-                ].map((cert, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center justify-center p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors duration-300 transform hover:scale-105"
-                    style={{ animationDelay: `${i * 100}ms` }}
-                  >
-                    {cert}
-                  </div>
-                ))}
-              </div>
+            <div className="flex justify-center gap-3 mb-12 flex-wrap">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => {
+                    if (cat) {
+                      setFilter(cat); // Ensure cat is not undefined
+                    }
+                  }}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                    filter === cat
+                      ? "bg-blue-600 text-white shadow-lg scale-105"
+                      : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-200"
+                  }`}
+                >
+                  {cat === "all" ? "All Projects" : cat}
+                </button>
+              ))}
             </div>
           </AnimatedSection>
+        )}
+
+        {/* Project Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {filteredProjects.map((project) => {
+            const id = project.id || project.title;
+            const isExpanded = expandedProjects[id] || false;
+            const isTruncated =
+              project.description.length > MAX_PROJECT_DESCRIPTION_LENGTH;
+            const descriptionText =
+              isTruncated && !isExpanded
+                ? project.description.substring(
+                    0,
+                    MAX_PROJECT_DESCRIPTION_LENGTH
+                  ) + "..."
+                : project.description;
+
+            return (
+              <AnimatedSection
+                key={id}
+                className="group bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-[1.02] overflow-hidden"
+              >
+                {/* Featured Badge */}
+                {project.featured && (
+                  <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white text-xs font-bold px-4 py-1 flex items-center gap-1">
+                    <Award className="h-3 w-3" />
+                    FEATURED PROJECT
+                  </div>
+                )}
+
+                {/* Thumbnail Image */}
+                {project.thumbnailUrl && (
+                  <div className="relative h-48 overflow-hidden">
+                    <img
+                      src={project.thumbnailUrl}
+                      alt={project.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    {project.status && (
+                      <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-medium bg-white/90 text-gray-800">
+                        {project.status}
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                <div className="p-6 relative">
+                  {/* Animated background gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                  <div className="relative z-10">
+                    {/* Header */}
+                    <div className="mb-4">
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex-1">
+                          <h3 className="text-2xl font-bold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors duration-300">
+                            {project.title}
+                          </h3>
+                          {project.subtitle && (
+                            <p className="text-sm text-blue-600 font-medium mb-2">
+                              {project.subtitle}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Metadata */}
+                      <div className="flex flex-wrap gap-2 text-xs text-gray-600 mb-3">
+                        {project.period && (
+                          <span className="px-3 py-1 bg-gray-100 rounded-full">
+                            📅 {project.period}
+                          </span>
+                        )}
+                        {project.role && (
+                          <span className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full">
+                            👤 {project.role}
+                          </span>
+                        )}
+                        {project.teamSize && (
+                          <span className="px-3 py-1 bg-purple-50 text-purple-700 rounded-full">
+                            👥 {project.teamSize}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Description (Modified) */}
+                    <p className="text-gray-700 mb-2 leading-relaxed whitespace-pre-line">
+                      {descriptionText}
+                    </p>
+
+                    {/* View More/Less Button (Added) */}
+                    {isTruncated && (
+                      <div className="text-right mb-4">
+                        <button
+                          onClick={() => toggleDescription(id)}
+                          className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200 text-sm font-medium group"
+                        >
+                          {isExpanded ? (
+                            <>
+                              View Less
+                              <ChevronsUp className="w-4 h-4 ml-1 transform group-hover:-translate-y-0.5 transition-transform" />
+                            </>
+                          ) : (
+                            <>
+                              View More
+                              <ChevronsDown className="w-4 h-4 ml-1 transform group-hover:translate-y-0.5 transition-transform" />
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Technologies */}
+                    <div className="mb-4">
+                      <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                        <span className="w-1 h-4 bg-blue-600 rounded"></span>
+                        Tech Stack
+                      </h4>
+                      <div className="flex flex-wrap gap-2">
+                        {project.technologies.map((tech, i) => (
+                          <span
+                            key={i}
+                            className="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 border border-blue-200 transform hover:scale-110 transition-transform duration-200"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Metrics */}
+                    {project.metrics && project.metrics.length > 0 && (
+                      <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <h4 className="text-sm font-semibold text-green-900 mb-2 flex items-center gap-2">
+                          📊 Impact & Results
+                        </h4>
+                        <ul className="space-y-1">
+                          {project.metrics.map((metric, i) => (
+                            <li
+                              key={i}
+                              className="flex items-center text-sm text-green-800"
+                            >
+                              <ChevronRight className="h-3 w-3 text-green-600 mr-2 flex-shrink-0" />
+                              <span className="font-medium">{metric}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* Achievements */}
+                    {project.achievements &&
+                      project.achievements.length > 0 && (
+                        <div className="mb-4">
+                          <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                            <span className="w-1 h-4 bg-purple-600 rounded"></span>
+                            Key Achievements
+                          </h4>
+                          <ul className="space-y-1">
+                            {project.achievements.map((achievement, i) => (
+                              <li
+                                key={i}
+                                className="flex items-start text-sm text-gray-700"
+                              >
+                                <ChevronRight className="h-4 w-4 text-blue-600 mr-2 flex-shrink-0 mt-0.5" />
+                                {achievement}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                    {/* Challenges */}
+                    {project.challenges && project.challenges.length > 0 && (
+                      <div className="mb-4">
+                        <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                          🎯 Challenges Solved
+                        </h4>
+                        <ul className="space-y-1">
+                          {project.challenges
+                            .slice(0, 2)
+                            .map((challenge, i) => (
+                              <li
+                                key={i}
+                                className="text-sm text-gray-600 italic"
+                              >
+                                • {challenge}
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* Links */}
+                    <div className="flex flex-wrap gap-3 mt-6 pt-4 border-t border-gray-200">
+                      {project.liveDemo && (
+                        <a
+                          href={
+                            project.liveDemo.startsWith("http")
+                              ? project.liveDemo
+                              : `https://${project.liveDemo}`
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-300 text-sm font-medium shadow-md hover:shadow-lg transform hover:scale-105"
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                          Live Demo
+                        </a>
+                      )}
+                      {project.githubUrl && (
+                        <a
+                          href={
+                            project.githubUrl.startsWith("http")
+                              ? project.githubUrl
+                              : `https://${project.githubUrl}`
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-all duration-300 text-sm font-medium shadow-md hover:shadow-lg transform hover:scale-105"
+                        >
+                          <Github className="h-4 w-4" />
+                          GitHub
+                        </a>
+                      )}
+                      {project.videoUrl && (
+                        <a
+                          href={
+                            project.videoUrl.startsWith("http")
+                              ? project.videoUrl
+                              : `https://${project.videoUrl}`
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-300 text-sm font-medium shadow-md hover:shadow-lg transform hover:scale-105"
+                        >
+                          <Video className="h-4 w-4" />
+                          Video
+                        </a>
+                      )}
+                      {project.caseStudyUrl && (
+                        <a
+                          href={
+                            project.caseStudyUrl.startsWith("http")
+                              ? project.caseStudyUrl
+                              : `https://${project.caseStudyUrl}`
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all duration-300 text-sm font-medium"
+                        >
+                          📝 Case Study
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </AnimatedSection>
+            );
+          })}
         </div>
+
+        {filteredProjects.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-600">No projects found in this category.</p>
+          </div>
+        )}
       </div>
     </section>
   );
 };
 
-export default Skills;
+export default Projects;

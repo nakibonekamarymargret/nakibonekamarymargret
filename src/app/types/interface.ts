@@ -50,44 +50,29 @@ export interface Admin {
 }
 
 // Experience interface
-interface ExperienceData {
-  // Basic Info
+export interface ExperienceData {
+  id?: string;
   title: string;
   company: string;
   companyUrl?: string;
-  location?: string; // "Remote", "Kampala, Uganda", "Hybrid"
-  employmentType?: string; // "Full-time", "Part-time", "Contract", "Freelance"
-
-  // Dates
+  location?: string;
+  employmentType?: string;
   startDate: string;
   endDate: string;
-  isCurrent?: boolean; // Currently working here
-
-  // Visual
-  imageUrl?: string; // Company logo
-  companySize?: string; // "1-10", "11-50", "51-200", "200+"
-  industry?: string; // "Tech", "Finance", "Healthcare", etc.
-
-  // Content
+  isCurrent?: boolean;
+  imageUrl?: string;
+  companySize?: string;
+  industry?: string;
   description: string;
   achievements: string[];
-
-  // Technical Details
-  technologies?: string[]; // Tech stack used in this role
-  responsibilities?: string[]; // Day-to-day duties
-
-  // Impact & Metrics
-  metrics?: string[]; // Quantifiable results
-  projects?: string[]; // Key projects worked on
-
-  // Skills Developed
-  skillsGained?: string[]; // New skills learned
-
-  // Display
+  technologies?: string[];
+  responsibilities?: string[];
+  metrics?: string[];
+  projects?: string[];
+  skillsGained?: string[];
   featured?: boolean;
   priority?: number;
 }
-
 
 // Skill interface
 export interface SkillData {
