@@ -1,8 +1,10 @@
 "use client";
 
-import { ChevronRight, ExternalLink, Github, Video, Award } from "lucide-react";
+import { ChevronRight, ExternalLink, Video, Award } from "lucide-react";
 import React, { useState, useEffect, useCallback } from "react";
 import { RxDoubleArrowUp, RxDoubleArrowDown } from "react-icons/rx";
+import { FaGithub } from "react-icons/fa6";
+import Image from "next/image";
 
 interface ProjectData {
   id?: string;
@@ -45,10 +47,11 @@ const ProjectCard = ({ project }: { project: ProjectData }) => {
       {/* Thumbnail Image */}
       {project.thumbnailUrl && (
         <div className="relative h-48 overflow-hidden">
-          <img
+          <Image
             src={project.thumbnailUrl}
             alt={project.title}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            fill
+            className="object-cover group-hover:scale-110 transition-transform duration-500"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
           {project.status && (
@@ -98,20 +101,22 @@ const ProjectCard = ({ project }: { project: ProjectData }) => {
               )}
             </div>
           </div>
+
           {/* Description */}
           <p className="text-gray-700 mb-4 leading-relaxed">
             {project.description}
           </p>
+
           {/* Technologies */}
           <div className="mb-4">
             <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
               <span className="w-1 h-4 bg-blue-600 rounded"></span>
-              Tech Stack
+              <span>Tech Stack</span>
             </h4>
             <div className="flex flex-wrap gap-2">
-              {project.technologies.map((tech, i) => (
+              {project.technologies.map((tech) => (
                 <span
-                  key={i}
+                  key={tech}
                   className="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 border border-blue-200 transform hover:scale-110 transition-transform duration-200"
                 >
                   {tech}
@@ -119,6 +124,7 @@ const ProjectCard = ({ project }: { project: ProjectData }) => {
               ))}
             </div>
           </div>
+
           {/* Expandable Content */}
           <div
             className={`transition-all duration-500 overflow-hidden ${
@@ -132,9 +138,9 @@ const ProjectCard = ({ project }: { project: ProjectData }) => {
                   📊 Impact & Results
                 </h4>
                 <ul className="space-y-1">
-                  {project.metrics.map((metric, i) => (
+                  {project.metrics.map((metric) => (
                     <li
-                      key={i}
+                      key={metric}
                       className="flex items-center text-sm text-green-800"
                     >
                       <ChevronRight className="h-3 w-3 text-green-600 mr-2 flex-shrink-0" />
@@ -150,12 +156,12 @@ const ProjectCard = ({ project }: { project: ProjectData }) => {
               <div className="mb-4">
                 <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
                   <span className="w-1 h-4 bg-purple-600 rounded"></span>
-                  Key Achievements
+                  <span>Key Achievements</span>
                 </h4>
                 <ul className="space-y-1">
-                  {project.achievements.map((achievement, i) => (
+                  {project.achievements.map((achievement) => (
                     <li
-                      key={i}
+                      key={achievement}
                       className="flex items-start text-sm text-gray-700"
                     >
                       <ChevronRight className="h-4 w-4 text-blue-600 mr-2 flex-shrink-0 mt-0.5" />
@@ -173,8 +179,11 @@ const ProjectCard = ({ project }: { project: ProjectData }) => {
                   🎯 Challenges Solved
                 </h4>
                 <ul className="space-y-1">
-                  {project.challenges.map((challenge, i) => (
-                    <li key={i} className="text-sm text-gray-600 italic">
+                  {project.challenges.map((challenge) => (
+                    <li
+                      key={challenge}
+                      className="text-sm text-gray-600 italic"
+                    >
                       • {challenge}
                     </li>
                   ))}
@@ -182,6 +191,7 @@ const ProjectCard = ({ project }: { project: ProjectData }) => {
               </div>
             )}
           </div>
+
           {/* Links */}
           <div className="flex flex-wrap gap-3 mt-6 pt-4 border-t border-gray-200">
             {project.liveDemo && (
@@ -210,7 +220,7 @@ const ProjectCard = ({ project }: { project: ProjectData }) => {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-all duration-300 text-sm font-medium shadow-md hover:shadow-lg transform hover:scale-105"
               >
-                <Github className="h-4 w-4" />
+                <FaGithub className="h-4 w-4" />
                 GitHub
               </a>
             )}
@@ -243,7 +253,8 @@ const ProjectCard = ({ project }: { project: ProjectData }) => {
                 📝 Case Study
               </a>
             )}
-          </div>{" "}
+          </div>
+
           {/* View More/Less Button */}
           <button
             onClick={() => setIsExpanded(!isExpanded)}

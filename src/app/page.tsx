@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-
+import { Analytics } from "@vercel/analytics/next";
 import { ChevronRight } from "lucide-react";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
@@ -111,6 +111,7 @@ const Portfolio = () => {
       <Skills />
       {/* Contact Section */}
       <Contact />
+      <Analytics />
       <Footer />
     </div>
   );
