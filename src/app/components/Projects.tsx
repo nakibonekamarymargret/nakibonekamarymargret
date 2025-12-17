@@ -114,9 +114,9 @@ const ProjectCard = ({ project }: { project: ProjectData }) => {
               <span>Tech Stack</span>
             </h4>
             <div className="flex flex-wrap gap-2">
-              {project.technologies.map((tech) => (
+              {project.technologies.map((tech, index) => (
                 <span
-                  key={tech}
+                  key={`${tech}-${index}`}
                   className="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 border border-blue-200 transform hover:scale-110 transition-transform duration-200"
                 >
                   {tech}
@@ -138,9 +138,9 @@ const ProjectCard = ({ project }: { project: ProjectData }) => {
                   📊 Impact & Results
                 </h4>
                 <ul className="space-y-1">
-                  {project.metrics.map((metric) => (
+                  {project.metrics.map((metric, index) => (
                     <li
-                      key={metric}
+                      key={`${metric}-${index}`}
                       className="flex items-center text-sm text-green-800"
                     >
                       <ChevronRight className="h-3 w-3 text-green-600 mr-2 flex-shrink-0" />
@@ -159,9 +159,9 @@ const ProjectCard = ({ project }: { project: ProjectData }) => {
                   <span>Key Achievements</span>
                 </h4>
                 <ul className="space-y-1">
-                  {project.achievements.map((achievement) => (
+                  {project.achievements.map((achievement, index) => (
                     <li
-                      key={achievement}
+                      key={`${achievement}-${index}`}
                       className="flex items-start text-sm text-gray-700"
                     >
                       <ChevronRight className="h-4 w-4 text-blue-600 mr-2 flex-shrink-0 mt-0.5" />
@@ -179,9 +179,9 @@ const ProjectCard = ({ project }: { project: ProjectData }) => {
                   🎯 Challenges Solved
                 </h4>
                 <ul className="space-y-1">
-                  {project.challenges.map((challenge) => (
+                  {project.challenges.map((challenge, index) => (
                     <li
-                      key={challenge}
+                      key={`${challenge}-${index}`}
                       className="text-sm text-gray-600 italic"
                     >
                       • {challenge}

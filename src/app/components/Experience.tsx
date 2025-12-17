@@ -1,5 +1,4 @@
 "use client";
-
 import {
   ChevronRight,
   MapPin,
@@ -10,6 +9,7 @@ import {
 } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
 import { RxDoubleArrowUp, RxDoubleArrowDown } from "react-icons/rx";
+import Image from "next/image";
 
 interface ExperienceData {
   id?: string;
@@ -63,10 +63,12 @@ const ExperienceCard = ({
           {/* Company Logo */}
           {exp.imageUrl && (
             <div className="w-16 h-16 rounded-xl overflow-hidden border-2 border-gray-200 flex-shrink-0">
-              <img
+              
+              <Image
                 src={exp.imageUrl}
                 alt={exp.company}
-                className="object-cover w-full h-full"
+                fill
+                className="object-cover group-hover:scale-110 transition-transform duration-500"
               />
             </div>
           )}
@@ -154,7 +156,7 @@ const ExperienceCard = ({
             </div>
           </div>
         )}
-{/*  */}
+        {/*  */}
 
         {/* Expandable Content */}
         <div

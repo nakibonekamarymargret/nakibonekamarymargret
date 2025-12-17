@@ -19,6 +19,14 @@ const Portfolio = () => {
     setIsLoaded(true);
   }, []);
 
+  // Smooth scroll function
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <div className="min-h-screen">
       {/* Navigation */}
@@ -61,16 +69,18 @@ const Portfolio = () => {
               <div
                 className={`flex flex-col sm:flex-row gap-4 transform transition-all duration-1000 delay-700 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
               >
-                {/* Updated button styles for contrast */}
+                {/* View My Work Button - scrolls to Projects */}
                 <button
-                  // Note: Removed onClick to a shared function
+                  onClick={() => scrollToSection("projects")}
                   className="group inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-gray-900 bg-white hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
                 >
                   View My Work
                   <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
                 </button>
+
+                {/* Get In Touch Button - scrolls to Contact */}
                 <button
-                  // Note: Removed onClick to a shared function
+                  onClick={() => scrollToSection("contact")}
                   className="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-white bg-transparent hover:bg-gray-50/20 transition-all duration-300 transform hover:scale-105 hover:shadow-md"
                 >
                   Get In Touch
