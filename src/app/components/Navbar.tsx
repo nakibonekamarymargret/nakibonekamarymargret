@@ -114,7 +114,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-black/70 border-t border-gray-700">
+        <div className="md:hidden border-t border-gray-700">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navigation.map((item) => (
               <button
@@ -122,7 +122,7 @@ const Navbar = () => {
                 onClick={() => scrollToSection(item.id)}
                 className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium transition-colors ${
                   activeSection === item.id
-                    ? "bg-blue-600 text-white"
+                    ? "text-white"
                     : "text-gray-200 hover:bg-gray-100/10 hover:text-white"
                 }`}
               >
