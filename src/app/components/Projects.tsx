@@ -5,31 +5,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import { RxDoubleArrowUp, RxDoubleArrowDown } from "react-icons/rx";
 import { FaGithub } from "react-icons/fa6";
 import Image from "next/image";
+import {ProjectData} from "@/app/types/interface";
 
-interface ProjectData {
-  id?: string;
-  title: string;
-  subtitle: string;
-  period: string;
-  description: string;
-  thumbnailUrl?: string;
-  screenshots?: string[];
-  videoUrl?: string;
-  technologies: string[];
-  category?: string;
-  role?: string;
-  teamSize?: string;
-  achievements: string[];
-  metrics?: string[];
-  challenges?: string[];
-  projectUrl?: string;
-  githubUrl?: string;
-  liveDemo?: string;
-  caseStudyUrl?: string;
-  status?: string;
-  featured?: boolean;
-  priority?: number;
-}
 
 const ProjectCard = ({ project }: { project: ProjectData }) => {
   const [isExpanded, setIsExpanded] = useState(false);
