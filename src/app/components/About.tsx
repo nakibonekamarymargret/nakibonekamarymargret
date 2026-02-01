@@ -34,13 +34,11 @@ const About = () => {
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">About Me</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-               Software Engineer with a strong foundation in
-              data analysis, machine learning, and full-stack development. Ready
-              to contribute to data-driven projects and innovative software
-              solutions.
+               From backend
             </p>
           </div>
         </AnimatedSection>
+<h2>More from backend ie testing, documentation</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {skills.map((item, index) => (

@@ -309,8 +309,8 @@ const Experience = () => {
   return (
     <section
       id="experience"
-      className="py-20 bg-[url('/bg1.jpeg')] bg-cover bg-center bg-no-repeat overflow-hidden relative"
-    >
+      className="group bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-[1.02] overflow-hidden">
+    
       <div className="absolute inset-0 bg-black opacity-60"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -329,7 +329,8 @@ const Experience = () => {
             <ExperienceCard key={exp.id || index} exp={exp} index={index} />
           ))}
         </div>
-
+<h2>From backend </h2>
+        <p>Change lay out in form of a circle plus name of experience below</p>
         {experiences.length === 0 && (
           <div className="text-center py-12 bg-white/10 rounded-lg backdrop-blur-sm">
             <p className="text-gray-300 text-lg">

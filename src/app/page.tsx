@@ -62,9 +62,7 @@ const Portfolio = () => {
               <p
                 className={`text-xl text-gray-200 mb-8 transform transition-all duration-1000 delay-500 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"}`}
               >
-                Detail-oriented Software Engineer with expertise in full-stack
-                development, data analysis, and machine learning. Passionate
-                about creating innovative solutions that drive business growth.
+               From backend
               </p>
               <div
                 className={`flex flex-col sm:flex-row gap-4 transform transition-all duration-1000 delay-700 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
@@ -113,10 +111,11 @@ const Portfolio = () => {
 
       {/* About Section */}
       <About />
-      {/* Experience Section */}
-      <Experience />
       {/* Projects Section */}
       <Projects />
+      {/* Experience Section */}
+      <Experience />
+
       {/* Skills Section */}
       <Skills />
       {/* Contact Section */}
